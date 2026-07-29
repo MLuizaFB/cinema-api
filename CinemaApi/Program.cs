@@ -2,6 +2,8 @@ using CinemaApi.Data;
 using CinemaApi.Repositories.Implementations;
 using CinemaApi.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using CinemaApi.Services.Interfaces;
+using CinemaApi.Services.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,9 @@ builder.Services.AddDbContext<CinemaContext>(options =>
 //Registros
 builder.Services.AddScoped<ISessaoRepository, SessaoRepository>();
 builder.Services.AddScoped<IReservaRepository, ReservaRepository>();
+
+builder.Services.AddScoped<ISessaoService, SessaoService>();
+builder.Services.AddScoped<IReservaService, ReservaService>();
 
 // Add services to the container.
 builder.Services.AddControllers();
