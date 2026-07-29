@@ -34,6 +34,12 @@ public class SessaoService : ISessaoService
     {
         ValidarDadosSessao(sessao);
 
+        bool temConflito = await _sessaoRepository.ExisteSessaoConflitanteAsync(sessao.SalaId, sessao.DataHora, sessao.FilmeId);
+        if (temConflito)
+        {
+            throw new Exception("Conflito de horário: Já existe uma sessão ocupando a sala neste período");
+        }
+
         await _sessaoRepository.AdicionarSessaoAsync(sessao);
         return sessao;
     }
@@ -48,6 +54,12 @@ public class SessaoService : ISessaoService
         }
 
         ValidarDadosSessao(sessaoAtualizada);
+
+        bool temConflito = await _sessaoRepository.ExisteSessaoConflitanteAsync(sessaoAtualizada.SalaId, sessaoAtualizada.DataHora, sessaoAtualizada.FilmeId, id);
+        if (temConflito)
+        {
+            throw new Exception("Conflito de horário: Já existe uma sessão ocupando a sala neste período.");
+        }
 
         sessaoExistente.DataHora = sessaoAtualizada.DataHora;
         sessaoExistente.Preco = sessaoAtualizada.Preco;

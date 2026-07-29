@@ -25,4 +25,17 @@ public class ReservaRepository : IReservaRepository
         return await _context.Reservas
             .AnyAsync(r => r.SessaoId == sessaoId && r.AssentoId == assentoId);
     }
+
+    public async Task<Reserva?> BuscarReservaPorIdAsync(int id)
+    {
+        return await _context.Reservas
+            .Include(r => r.Sessao)
+            .FirstOrDefaultAsync(r => r.Id == id);
+    }
+
+    public async Task DeletarReservaAsync(Reserva reserva)
+    {
+        _context.Reservas.Remove(reserva);
+        await _context.SaveChangesAsync();
+    }
 }

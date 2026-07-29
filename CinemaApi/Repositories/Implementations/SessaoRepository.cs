@@ -47,4 +47,39 @@ public class SessaoRepository : ISessaoRepository
         _context.Sessoes.Remove(sessao);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<bool> AssentoPertenceASalaAsync(int salaId, int assentoId)
+    {
+        return await _context.Set<Assento>()
+            .AnyAsync(a => a.Id == assentoId && a.SalaId == salaId);
+    }
+
+    public async Task<bool> ExisteSessaoConflitanteAsync(int salaId, DateTime horarioNovaSessao, int filmeId, int? sessaoIdIgnorada = null)
+    {
+        var filmeNovo = await _context.Set<Filme>().FindAsync(filmeId);
+        if (filmeNovo == null) return false; 
+
+        var fimNovaSessao = horarioNovaSessao.AddMinutes(filmeNovo.Duracao);
+
+        DateTime inicioDoDia = horarioNovaSessao.Date;
+        DateTime fimDoDia = inicioDoDia.AddDays(1);
+
+        var query = _context.Sessoes
+            .Include(s => s.Filme) 
+            .Where(s => s.SalaId == salaId && s.DataHora >= inicioDoDia && s.DataHora < fimDoDia);
+
+        if (sessaoIdIgnorada.HasValue)
+        {
+            query = query.Where(s => s.Id != sessaoIdIgnorada.Value);
+        }
+
+        var sessoesNoMesmoDia = await query.ToListAsync();
+
+        return sessoesNoMesmoDia.Any(sessaoExistente => 
+        {
+            var fimSessaoExistente = sessaoExistente.DataHora.AddMinutes(sessaoExistente.Filme.Duracao);
+            
+            return horarioNovaSessao < fimSessaoExistente && fimNovaSessao > sessaoExistente.DataHora;
+        });
+    }
 }
