@@ -1,4 +1,6 @@
 using CinemaApi.Data;
+using CinemaApi.Repositories.Implementations;
+using CinemaApi.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 //Configuração do banco de dados SQLite
 builder.Services.AddDbContext<CinemaContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+//Registros
+builder.Services.AddScoped<ISessaoRepository, SessaoRepository>();
+builder.Services.AddScoped<IReservaRepository, ReservaRepository>();
 
 // Add services to the container.
 builder.Services.AddControllers();
