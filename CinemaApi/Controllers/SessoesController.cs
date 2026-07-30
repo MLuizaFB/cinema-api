@@ -36,6 +36,20 @@ public class SessoesController : ControllerBase
         return Ok(response); 
     }
 
+    [HttpGet("{id}/assentos")]
+    public async Task<IActionResult> ObterOcupacaoAssentos(int id)
+    {
+        try
+        {
+            var assentos = await _sessaoService.ObterOcupacaoAssentosAsync(id);
+            return Ok(assentos);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { erro = ex.Message });
+        }
+    }
+
     [HttpPost] 
     public async Task<IActionResult> Adicionar([FromBody] SessaoRequestDTO request)
     {

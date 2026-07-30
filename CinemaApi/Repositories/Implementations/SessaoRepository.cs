@@ -82,4 +82,20 @@ public class SessaoRepository : ISessaoRepository
             return horarioNovaSessao < fimSessaoExistente && fimNovaSessao > sessaoExistente.DataHora;
         });
     }
+
+    public async Task<IEnumerable<Assento>> BuscarAssentosDaSalaAsync(int salaId)
+    {
+        return await _context.Set<Assento>()
+            .Where(a => a.SalaId == salaId)
+            .OrderBy(a => a.Codigo)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<int>> BuscarIdsAssentosReservadosAsync(int sessaoId)
+    {
+        return await _context.Set<Reserva>()
+            .Where(r => r.SessaoId == sessaoId)
+            .Select(r => r.AssentoId)
+            .ToListAsync();
+    }
 }

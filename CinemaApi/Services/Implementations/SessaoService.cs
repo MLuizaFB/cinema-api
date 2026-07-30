@@ -1,6 +1,7 @@
 namespace CinemaApi.Services.Implementations;
 
 using CinemaApi.Entities;
+using CinemaApi.DTOs.Responses;
 using CinemaApi.Repositories.Interfaces;
 using CinemaApi.Services.Interfaces;
 
@@ -79,6 +80,26 @@ public class SessaoService : ISessaoService
         }
 
         await _sessaoRepository.DeletarSessaoAsync(sessao);
+    }
+
+    public async Task<IEnumerable<AssentoOcupacaoResponseDTO>> ObterOcupacaoAssentosAsync(int sessaoId)
+    {
+        var sessao = await _sessaoRepository.BuscarSessaoPorIdAsync(sessaoId);
+        if (sessao == null)
+        {
+            throw new Exception("Sessão não encontrada.");
+        }
+
+        var assentosDaSala = await _sessaoRepository.BuscarAssentosDaSalaAsync(sessao.SalaId);
+        var idsReservados = await _sessaoRepository.BuscarIdsAssentosReservadosAsync(sessaoId);
+        var setReservados = idsReservados.ToHashSet();
+
+        return assentosDaSala.Select(assento => new AssentoOcupacaoResponseDTO
+        {
+            Id = assento.Id,
+            Codigo = assento.Codigo,
+            Ocupado = setReservados.Contains(assento.Id)
+        });
     }
 
     private void ValidarDadosSessao(Sessao sessao)

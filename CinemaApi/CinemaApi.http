@@ -1,6 +1,56 @@
 @CinemaApi_HostAddress = http://localhost:5190
 
-GET {{CinemaApi_HostAddress}}/weatherforecast/
+### 1. Buscar todas as sessões (retornar lista vazia [])
+GET {{CinemaApi_HostAddress}}/api/sessoes
 Accept: application/json
 
-###
+### 2. Criar primeira sessão (Piratas do Caribe 1 - 143 min, Sala 1 - 31/07 às 14:00)
+POST {{CinemaApi_HostAddress}}/api/sessoes
+Content-Type: application/json
+
+{
+  "filmeId": 1,
+  "salaId": 1,
+  "dataHora": "2026-07-31T14:00:00",
+  "preco": 30.00
+}
+
+### 3. Criar sessão conflitante (Mesma Sala 1 às 15:00, erro pois o primeiro filme ainda não acabou)
+POST {{CinemaApi_HostAddress}}/api/sessoes
+Content-Type: application/json
+
+{
+  "filmeId": 2,
+  "salaId": 1,
+  "dataHora": "2026-07-31T15:00:00",
+  "preco": 25.00
+}
+
+### 4. Criar reserva (Reserva o assento 1 para a Sessão 1)
+POST {{CinemaApi_HostAddress}}/api/reservas
+Content-Type: application/json
+
+{
+  "nomeCliente": "Cliente",
+  "emailCliente": "cliente@email.com",
+  "sessaoId": 1,
+  "assentoId": 1
+}
+
+### 5. Tentar reservar o mesmo assento de novo (erro)
+POST {{CinemaApi_HostAddress}}/api/reservas
+Content-Type: application/json
+
+{
+  "nomeCliente": "Outro Cliente",
+  "emailCliente": "outro@email.com",
+  "sessaoId": 1,
+  "assentoId": 1
+}
+
+### 6. Consultar ocupação dos assentos da Sessão 1
+GET {{CinemaApi_HostAddress}}/api/sessoes/1/assentos
+Accept: application/json
+
+### 7. Cancelar a reserva criada (Supondo ID 1)
+DELETE {{CinemaApi_HostAddress}}/api/reservas/1
