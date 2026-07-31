@@ -86,6 +86,28 @@ public class SessoesController : ControllerBase
         }
     }
 
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Atualizar(int id, [FromBody] SessaoRequestDTO request)
+    {
+        try
+        {
+            var sessaoAtualizada = new Sessao
+            {
+                FilmeId = request.FilmeId,
+                SalaId = request.SalaId,
+                DataHora = request.DataHora,
+                Preco = request.Preco
+            };
+
+            await _sessaoService.AtualizarSessaoAsync(id, sessaoAtualizada);
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { erro = ex.Message });
+        }
+    }
+
     [HttpDelete("{id}")] 
     public async Task<IActionResult> Deletar(int id)
     {

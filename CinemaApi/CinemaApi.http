@@ -54,3 +54,14 @@ Accept: application/json
 
 ### 7. Cancelar a reserva criada (Supondo ID 1)
 DELETE {{CinemaApi_HostAddress}}/api/reservas/1
+
+### 8. Editar/Atualizar a sessão 1
+PUT {{CinemaApi_HostAddress}}/api/sessoes/1
+Content-Type: application/json
+
+{
+  "filmeId": 3,
+  "salaId": 1,
+  "dataHora": "2026-07-31T18:00:00",
+  "preco": 35.00
+}
