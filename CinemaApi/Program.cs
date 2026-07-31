@@ -49,6 +49,7 @@ app.UseCors("AllowAll");
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapGet("/", () => Results.Redirect("/swagger"));
 
 using (var scope = app.Services.CreateScope())
 {
