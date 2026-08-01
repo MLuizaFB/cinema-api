@@ -77,7 +77,7 @@ public class SessaoRepository : ISessaoRepository
 
         return sessoesNoMesmoDia.Any(sessaoExistente => 
         {
-            var fimSessaoExistente = sessaoExistente.DataHora.AddMinutes(sessaoExistente.Filme.Duracao);
+            var fimSessaoExistente = sessaoExistente.DataHora.AddMinutes(sessaoExistente.Filme!.Duracao);
             
             return horarioNovaSessao < fimSessaoExistente && fimNovaSessao > sessaoExistente.DataHora;
         });
