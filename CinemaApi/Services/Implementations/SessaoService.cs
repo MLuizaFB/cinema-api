@@ -35,6 +35,12 @@ public class SessaoService : ISessaoService
     {
         ValidarDadosSessao(sessao);
 
+        if (!await _sessaoRepository.FilmeExisteAsync(sessao.FilmeId))
+            throw new Exception("O filme informado não existe.");
+
+        if (!await _sessaoRepository.SalaExisteAsync(sessao.SalaId))
+            throw new Exception("A sala informada não existe.");
+
         bool temConflito = await _sessaoRepository.ExisteSessaoConflitanteAsync(sessao.SalaId, sessao.DataHora, sessao.FilmeId);
         if (temConflito)
         {
@@ -55,6 +61,12 @@ public class SessaoService : ISessaoService
         }
 
         ValidarDadosSessao(sessaoAtualizada);
+
+        if (!await _sessaoRepository.FilmeExisteAsync(sessaoAtualizada.FilmeId))
+            throw new Exception("O filme informado não existe.");
+
+        if (!await _sessaoRepository.SalaExisteAsync(sessaoAtualizada.SalaId))
+            throw new Exception("A sala informada não existe.");
 
         bool temConflito = await _sessaoRepository.ExisteSessaoConflitanteAsync(sessaoAtualizada.SalaId, sessaoAtualizada.DataHora, sessaoAtualizada.FilmeId, id);
         if (temConflito)

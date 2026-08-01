@@ -49,6 +49,23 @@ public class ReservasController : ControllerBase
         }
     }
 
+    [HttpGet]
+    public async Task<IActionResult> BuscarTodas()
+    {
+        var reservas = await _reservaService.BuscarTodasReservasAsync();
+        
+        var response = reservas.Select(r => new ReservaResponseDTO
+        {
+            Id = r.Id,
+            NomeCliente = r.NomeCliente,
+            EmailCliente = r.EmailCliente,
+            SessaoId = r.SessaoId,
+            AssentoId = r.AssentoId
+        });
+
+        return Ok(response);
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> Deletar(int id)
     {

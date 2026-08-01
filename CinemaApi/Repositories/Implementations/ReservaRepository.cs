@@ -33,6 +33,13 @@ public class ReservaRepository : IReservaRepository
             .FirstOrDefaultAsync(r => r.Id == id);
     }
 
+    public async Task<IEnumerable<Reserva>> BuscarTodasReservasAsync()
+    {
+        return await _context.Reservas
+            .Include(r => r.Sessao)
+            .ToListAsync();
+    }
+
     public async Task DeletarReservaAsync(Reserva reserva)
     {
         _context.Reservas.Remove(reserva);

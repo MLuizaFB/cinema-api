@@ -13,4 +13,6 @@ public interface ISessaoRepository
     Task<bool> ExisteSessaoConflitanteAsync(int salaId, DateTime dataHora, int filmeId, int? sessaoIdIgnorada = null);
     Task<IEnumerable<Assento>> BuscarAssentosDaSalaAsync(int salaId);
     Task<IEnumerable<int>> BuscarIdsAssentosReservadosAsync(int sessaoId);
+    Task<bool> FilmeExisteAsync(int filmeId);
+    Task<bool> SalaExisteAsync(int salaId);
 }

@@ -98,4 +98,14 @@ public class SessaoRepository : ISessaoRepository
             .Select(r => r.AssentoId)
             .ToListAsync();
     }
+
+    public async Task<bool> FilmeExisteAsync(int filmeId)
+    {
+        return await _context.Filmes.AnyAsync(f => f.Id == filmeId);
+    }
+
+    public async Task<bool> SalaExisteAsync(int salaId)
+    {
+        return await _context.Salas.AnyAsync(s => s.Id == salaId);
+    }
 }

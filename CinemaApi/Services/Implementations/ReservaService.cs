@@ -45,6 +45,11 @@ public class ReservaService : IReservaService
         return reserva;
     }
 
+    public async Task<IEnumerable<Reserva>> BuscarTodasReservasAsync()
+    {
+        return await _reservaRepository.BuscarTodasReservasAsync();
+    }
+
     public async Task DeletarReservaAsync(int id)
     {
         var reserva = await _reservaRepository.BuscarReservaPorIdAsync(id);

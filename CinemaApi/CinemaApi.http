@@ -79,3 +79,7 @@ Content-Type: application/json
   "dataHora": "2026-09-18T18:00:00",
   "preco": 35.00
 }
+
+### 11. Buscar todas as reservas cadastradas
+GET {{CinemaApi_HostAddress}}/api/reservas
+Accept: application/json
