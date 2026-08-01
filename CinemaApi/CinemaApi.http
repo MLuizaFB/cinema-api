@@ -4,14 +4,14 @@
 GET {{CinemaApi_HostAddress}}/api/sessoes
 Accept: application/json
 
-### 2. Criar primeira sessão (Piratas do Caribe 1 - 143 min, Sala 1 - 31/07 às 14:00)
+### 2. Criar primeira sessão (Piratas do Caribe 1 - 143 min, Sala 1 - 18/09 às 14:00)
 POST {{CinemaApi_HostAddress}}/api/sessoes
 Content-Type: application/json
 
 {
   "filmeId": 1,
   "salaId": 1,
-  "dataHora": "2026-07-31T14:00:00",
+  "dataHora": "2026-09-18T14:00:00",
   "preco": 30.00
 }
 
@@ -22,7 +22,7 @@ Content-Type: application/json
 {
   "filmeId": 2,
   "salaId": 1,
-  "dataHora": "2026-07-31T15:00:00",
+  "dataHora": "2026-09-18T15:00:00",
   "preco": 25.00
 }
 
@@ -52,16 +52,30 @@ Content-Type: application/json
 GET {{CinemaApi_HostAddress}}/api/sessoes/1/assentos
 Accept: application/json
 
-### 7. Cancelar a reserva criada (Supondo ID 1)
+### 7. Tentar criar reserva com e-mail inválido (erro 400 do Data Annotations)
+POST {{CinemaApi_HostAddress}}/api/reservas
+Content-Type: application/json
+
+{
+  "nomeCliente": "Cliente Teste",
+  "emailCliente": "email invalido",
+  "sessaoId": 1,
+  "assentoId": 2
+}
+
+### 8. Tentar deletar uma sessão que possui reservas ativas (erro)
+DELETE {{CinemaApi_HostAddress}}/api/sessoes/1
+
+### 9. Cancelar a primeira reserva criada (Supondo ID 1)
 DELETE {{CinemaApi_HostAddress}}/api/reservas/1
 
-### 8. Editar/Atualizar a sessão 1
+### 10. Editar/Atualizar a sessão 1
 PUT {{CinemaApi_HostAddress}}/api/sessoes/1
 Content-Type: application/json
 
 {
   "filmeId": 3,
   "salaId": 1,
-  "dataHora": "2026-07-31T18:00:00",
+  "dataHora": "2026-09-18T18:00:00",
   "preco": 35.00
 }

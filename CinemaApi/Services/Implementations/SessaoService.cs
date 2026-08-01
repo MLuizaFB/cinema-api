@@ -79,6 +79,12 @@ public class SessaoService : ISessaoService
             throw new Exception("Sessão não encontrada para exclusão.");
         }
 
+        var ingressosVendidos = await _sessaoRepository.BuscarIdsAssentosReservadosAsync(id);
+        if (ingressosVendidos.Any())
+        {
+            throw new Exception("Não é possível excluir uma sessão que já possui assentos reservados. Cancele as reservas primeiro.");
+        }
+
         await _sessaoRepository.DeletarSessaoAsync(sessao);
     }
 
