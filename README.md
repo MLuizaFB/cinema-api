@@ -47,7 +47,7 @@ A aplicação foi estruturada visando alto desacoplamento, manutenibilidade e ap
 
 O banco de dados foi planejado e modelado antes da implementação para garantir a integridade e rastreabilidade dos relacionamentos.
 
-![Diagrama de Classes](CinemaApi\img\modelagem_cinema_api.png)
+![Diagrama de Classes](CinemaApi/img/modelagem_cinema_api.png)
 
 ---
 
